@@ -1,4 +1,4 @@
-if: (type = push AND branch IN (master, develop)) OR (type = pull_request)
+if: (type = push AND branch IN (main, develop)) OR (type = pull_request)
 language: android
 jdk: oraclejdk11
 os: linux
@@ -8,7 +8,6 @@ env:
     - TARGET_VERSION=31
     - ANDROID_BUILD_TOOLS_VERSION=31.0.0
     - ANDROID_HOME=~/android-sdk
-    - secure: W8O9EQPh0xDqxPGirtL9pEyPJdiR5+ewKo9fzpR77ZN35ruR3SzBLuM7gtnKuo9kbItvc0f0Vzmv5EfejTqwws1tVzNS8Qc+6gI4vHSJ18FP5ZExHY+6oc14EHbNdXLNjzQ4Tzxm9QM4mr0tWiJo+4FiLR0xNE3ljaz31IlALTUBECc4TVDwdYmzpKYf3Uz86B5XiysHdNgg7UbsP3XG8aTtd7TLKMHqbtK2Mdp4mXz4CamzjQa7nINqKEK/JVfZVh83eBRuAR5PwE1SNkSUa48yAk+ptcy6WEjJv4KR8xBAB3USKHosofl4MKFg6BhXb563NEPkp3XG1k+9xKn5rnGTeyRc/K96sVPDq9IpC+fnCkTHml/4frrH5+AYzX47YD3pXnAPp7GwDVJJuoJ9h6PH88Iyk8Inl+Th7M1Y3IVxqQ6b4yNIBBBKNtqRU63aDKw+05fWi/quIdQHVIgWA1WeByejK5kFlfW2bhORURZECnv2C5IWW4YSntH4hD0DtHWmV/2QPyIjCPTqCqTIRuSUCZCu+iFbN7wIov8o8RdEJH9hrwjqzEkf0KbZRWrQgFeZ3Hx9NAnOGWr/oDjGHDQWNnyhjle5iGqWB34T8SMP0rP90tWwoJY0aDGlsTGmoFaSnRv+uFaiVt4W0tgR1X14fsVdtIcab/F3OpRe8Lw=
 
 android:
   components:
@@ -38,15 +37,13 @@ jobs:
   include:
     #     - name: "Test app"
     #       script: bundle exec fastlane unitTests
-
     - name: "Build Staging MFE"
       script: bundle exec fastlane buildStagingmfe
-      if: (head_branch NOT IN (master, develop))
+      if: (head_branch NOT IN (main, develop))
 
     - name: "Build and Deploy Staging MFE"
       script: bundle exec fastlane distributeStagingmfe
-      if: (head_branch IS blank AND branch IN (master, develop))
-
+      if: (head_branch IS blank AND branch IN (main, develop, release/*))
 
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
