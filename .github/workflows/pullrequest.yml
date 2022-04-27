@@ -5,7 +5,11 @@ on:
 
 jobs:
   codesmell:
-    name: Code Smell (Detekt, CheckStyle, Lint)
-    uses: ./.github/workflows/prepare.yml
-    with:
-      commands: ./gradlew build
+    runs-on: ubuntu-latest
+    steps:
+    - name: skip-job
+      if: ${{ 1== 1 }}
+      uses: actions/github-script@v3
+      with:
+        script:
+          core.setFailed('Resource is less than or equal to 10')  
